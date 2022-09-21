@@ -11,10 +11,6 @@ class UserSerializer(serializers.ModelSerializer):
 class CreateUserSerializer(serializers.ModelSerializer):
     password = serializers.RegexField(regex_password, required=True, allow_blank=False)
 
-    def validated(self, data):
-        print("data", data)
-        return data
-
     def create(self, data):
         return CustomUser.objects.create_user(**data)
 

@@ -1,12 +1,5 @@
-from django.urls import path
-
-from rest_framework_simplejwt.views import TokenRefreshView
-from .views import  UserViewSet
 from rest_framework.routers import SimpleRouter
+from .views import  UserViewSet
 
 usersRouter = SimpleRouter()
 usersRouter.register(r'users', UserViewSet)
-
-urlpatterns = [
-   
-]
