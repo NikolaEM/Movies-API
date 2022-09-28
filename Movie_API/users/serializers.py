@@ -24,12 +24,10 @@ class BlackListTokenSerializer(serializers.Serializer):
     refresh = serializers.CharField(required=True)
 
     def validate(self, attr):
-        print("calidation")
         self.token = attr['refresh']
         return attr
 
     def save(self, **kwargs):
-        print(self.token)
         token = RefreshToken(self.token)
         token.blacklist()
 
