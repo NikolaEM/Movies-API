@@ -1,4 +1,3 @@
-from dataclasses import field, fields
 from rest_framework import serializers
 from .models import CustomUser
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -24,12 +23,10 @@ class BlackListTokenSerializer(serializers.Serializer):
     refresh = serializers.CharField(required=True)
 
     def validate(self, attr):
-        print("calidation")
         self.token = attr['refresh']
         return attr
 
     def save(self, **kwargs):
-        print(self.token)
         token = RefreshToken(self.token)
         token.blacklist()
 
