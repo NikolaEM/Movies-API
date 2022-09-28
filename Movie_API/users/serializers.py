@@ -1,4 +1,3 @@
-from dataclasses import field, fields
 from rest_framework import serializers
 from .models import CustomUser
 from rest_framework_simplejwt.tokens import RefreshToken
