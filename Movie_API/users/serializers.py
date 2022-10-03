@@ -29,5 +29,3 @@ class BlackListTokenSerializer(serializers.Serializer):
     def save(self, **kwargs):
         token = RefreshToken(self.token)
         token.blacklist()
-
-    

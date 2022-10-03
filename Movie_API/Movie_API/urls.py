@@ -21,9 +21,12 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from users.urls import usersRouter, urlpatterns
+from movie.urls import moviesRouter, genresRouter
 
 router = DefaultRouter()
 router.registry.extend(usersRouter.registry)
+router.registry.extend(moviesRouter.registry)
+router.registry.extend(genresRouter.registry)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
