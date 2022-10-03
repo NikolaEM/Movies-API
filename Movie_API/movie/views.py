@@ -1,5 +1,5 @@
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.mixins import RetrieveModelMixin, CreateModelMixin
+from rest_framework.mixins import RetrieveModelMixin, CreateModelMixin, ListModelMixin
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED
@@ -20,8 +20,7 @@ class MovieViewSet(RetrieveModelMixin, GenericViewSet, CreateModelMixin):
            
         return Response(MovieSerializer(response, context={'request': request}).data, HTTP_201_CREATED)
 
-class GenreViewSet(GenericViewSet, CreateModelMixin):
+class GenreViewSet(GenericViewSet, ListModelMixin):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
     permission_classes = [IsAuthenticated]
-    

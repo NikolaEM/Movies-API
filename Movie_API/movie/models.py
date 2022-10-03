@@ -17,10 +17,6 @@ class Movie(models.Model):
     movie_cover = models.FileField(upload_to=get_file_path, blank=False, null=False)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, default="")
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE, default= "")
-    
-    
+     
     def __str__(self):
-        return self.title
-
-
-    
+        return self.title 
