@@ -11,7 +11,7 @@ class MovieViewSet(RetrieveModelMixin, GenericViewSet, CreateModelMixin):
     serializer_class = MovieSerializer
 
     def create(self, request):
-        data = request.data 
+        data = request.data.copy() 
         data["movie_cover"] = request.FILES.get("movie_cover")
         data["user"] = request.user.id
         serializer = CreateMovieSerializer(data=data)
