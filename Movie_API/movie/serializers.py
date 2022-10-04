@@ -8,9 +8,6 @@ class MovieSerializer(serializers.ModelSerializer):
 
 class CreateMovieSerializer(serializers.ModelSerializer):
 
-    def create(self, data):
-        return Movie.objects.create(**data)
-
     class Meta:
         model = Movie
         fields = ('__all__')
