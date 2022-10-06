@@ -1,14 +1,22 @@
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.mixins import RetrieveModelMixin, CreateModelMixin, ListModelMixin
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED
+from movie.pagination import CustomPageNumberPagination
 from .models import Movie, Genre
 from .serializers import CreateMovieSerializer, GenreSerializer, MovieSerializer
 
-class MovieViewSet(RetrieveModelMixin, GenericViewSet, CreateModelMixin):
+class MovieViewSet(RetrieveModelMixin, GenericViewSet, CreateModelMixin, ListModelMixin):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+    pagination_class = CustomPageNumberPagination
+    search_fields = ['title'] 
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    filterset_fields = ['genre'] 
+    
 
     def create(self, request):
         data = request.data.copy() 

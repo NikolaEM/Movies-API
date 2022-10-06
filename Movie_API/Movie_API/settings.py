@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 from datetime import timedelta
 import pymysql
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'django_extensions',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -80,13 +82,14 @@ TEMPLATES = [
 ]
 
 REST_FRAMEWORK = {
-   'DEFAULT_AUTHENTICATION_CLASSES': (
-        
+   'DEFAULT_AUTHENTICATION_CLASSES': (    
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),  
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ]  
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10 
 }
 
 WSGI_APPLICATION = 'Movie_API.wsgi.application'
@@ -181,6 +184,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+MEDIA_ROOT = os.path.join(BASE_DIR, '')
+MEDIA_URL = '`/files/'
 
 
 
