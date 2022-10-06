@@ -7,3 +7,4 @@ ENV/
 env.bak/
 venv.bak/
 Movie_API/files/
+__pycache__/
