@@ -17,6 +17,31 @@ class Movie(models.Model):
     movie_cover = models.FileField(upload_to=get_file_path, blank=False, null=False)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, default="")
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE, default= "")
+    likes = models.ManyToManyField(CustomUser, related_name='movies_liked', blank=True)
+    dislikes = models.ManyToManyField(CustomUser, related_name='movies_disliked', blank=True)
+
      
     def __str__(self):
         return self.title 
+
+    @classmethod
+    def like_movie(cls, user, pk):
+        movie = cls.objects.get(id=pk)
+        if movie.likes.filter(id=user.id).exists():
+            movie.likes.remove(user)
+        else:
+            if movie.dislikes.filter(id=user.id).exists():
+                movie.dislikes.remove(user)
+            movie.likes.add(user)
+        return movie
+
+    @classmethod
+    def dislike_movie(cls, user, pk):
+        movie = cls.objects.get(id=pk)
+        if movie.dislikes.filter(id=user.id).exists():
+            movie.dislikes.remove(user)
+        else:
+            if movie.likes.filter(id=user.id).exists():
+                movie.likes.remove(user)
+            movie.dislikes.add(user)
+        return movie
