@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_200_OK
 from rest_framework.decorators import action
 from movie.pagination import CustomPageNumberPagination
-from .models import Comment, Movie, Genre
+from .models import Comment, Movie, Genre, WatchList
 from .serializers import CommentSerializer, CreateMovieSerializer, GenreSerializer, MovieSerializer, RetrieveMovieSerializer
 
 class CommentView(RetrieveModelMixin, GenericViewSet, CreateModelMixin, ListModelMixin):
@@ -70,6 +70,14 @@ class MovieViewSet(RetrieveModelMixin, GenericViewSet, CreateModelMixin, ListMod
     @action(detail=False, methods=["get"], url_path='popular', permission_classes=[IsAuthenticated])
     def popular_movies(self, request):
         return Response(MovieSerializer(Movie.popular(), context={'request': self.request}, many=True).data)
+
+    @action(detail=False, methods=["get"], url_path='watch-list', permission_classes=[IsAuthenticated])
+    def watch_list(request):
+        return Response(MovieSerializer(Movie.watch_list(request), context={'request': request}, many=True).data)
+
+    @action(detail=True, methods=["patch"], url_path='watch-list/add', permission_classes=[IsAuthenticated])
+    def watch_list_add_remove(request, movie_id):
+        return Response(MovieSerializer(WatchList.add_remove(request.user, movie_id), context={'request': request}).data)
 
 class GenreViewSet(GenericViewSet, ListModelMixin):
     queryset = Genre.objects.all()

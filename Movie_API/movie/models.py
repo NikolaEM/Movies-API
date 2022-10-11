@@ -55,3 +55,18 @@ class Comment(models.Model):
     content = models.CharField(max_length=500, blank=False)
     user = models.ForeignKey(CustomUser, related_name='comments', on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, related_name='comments', on_delete=models.CASCADE)
+
+class WatchList(models.Model):
+    watched = models.BooleanField(default=False)
+    user = models.ForeignKey(CustomUser, related_name='watch_list', on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, related_name='watch_list', on_delete=models.CASCADE)
+
+    @classmethod
+    def add_remove(cls, user, movie_id):
+        movie = Movie.objects.get(id=movie_id)
+        item = cls.objects.filter(user=user, movie=movie)
+        if item.exists():
+            item.delete()
+        else:
+            cls.objects.create(user=user, movie=movie)
+        return movie
