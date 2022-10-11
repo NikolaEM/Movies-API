@@ -17,7 +17,6 @@ class CommentView(RetrieveModelMixin, GenericViewSet, CreateModelMixin, ListMode
     serializer_class = CommentSerializer
 
     def get_queryset(self):
-        print('self', self.kwargs.get('nested_1_pk'))
         return Comment.objects.filter(movie_id = self.kwargs.get('nested_1_pk'))
         
     def create(self, request, nested_1_pk):
