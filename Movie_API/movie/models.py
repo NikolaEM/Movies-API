@@ -19,6 +19,7 @@ class Movie(models.Model):
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE, default= "")
     likes = models.ManyToManyField(CustomUser, related_name='movies_liked', blank=True)
     dislikes = models.ManyToManyField(CustomUser, related_name='movies_disliked', blank=True)
+    number_of_views = models.PositiveIntegerField(blank=False, null=False, default=0)
 
      
     def __str__(self):
@@ -45,3 +46,12 @@ class Movie(models.Model):
                 movie.likes.remove(user)
             movie.dislikes.add(user)
         return movie
+
+    @classmethod
+    def popular(cls):
+        return cls.objects.all().annotate(likes_sum=models.Count('likes')).order_by('-likes_sum')[:10]
+
+class Comment(models.Model):
+    content = models.CharField(max_length=500, blank=False)
+    user = models.ForeignKey(CustomUser, related_name='comments', on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, related_name='comments', on_delete=models.CASCADE)

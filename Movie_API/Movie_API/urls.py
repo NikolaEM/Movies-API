@@ -23,17 +23,19 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from users.urls import usersRouter, urlpatterns
-from movie.urls import moviesRouter, genresRouter
+from movie.urls import moviesRouter, genresRouter, commentsNestedRouter
 
 router = DefaultRouter()
 router.registry.extend(usersRouter.registry)
 router.registry.extend(moviesRouter.registry)
 router.registry.extend(genresRouter.registry)
+router.registry.extend(commentsNestedRouter.registry)
 
 urlpatterns = [
+    path('', include(urlpatterns)),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    path('', include(urlpatterns)),
+    path('api/', include(commentsNestedRouter.urls)),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
