@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Genre, Movie
+from .models import Genre, Movie, Comment
 
 class MovieSerializer(serializers.ModelSerializer):
     likes_count = serializers.SerializerMethodField()
@@ -22,10 +22,9 @@ class MovieSerializer(serializers.ModelSerializer):
             "movie_cover",
             "user",
             "genre",
-            "id"
-            )
-
-    
+            "id",
+            'number_of_views',
+            )   
 
 class CreateMovieSerializer(serializers.ModelSerializer):
 
@@ -38,3 +37,15 @@ class GenreSerializer(serializers.ModelSerializer):
     class Meta:
             model = Genre
             fields = ('__all__')    
+
+class RetrieveMovieSerializer(BaseException):
+    def retrieve(self, instance):
+        instance.number_of_views += 1
+        instance.save()
+        return instance
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comment
+        fields = ['id', 'content', 'user', 'movie']
