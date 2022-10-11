@@ -38,7 +38,7 @@ class MovieViewSet(RetrieveModelMixin, GenericViewSet, CreateModelMixin, ListMod
     filterset_fields = ['genre'] 
     
 
-    def create(self, request, pk):
+    def create(self, request):
         data = request.data.copy() 
         data["movie_cover"] = request.FILES.get("movie_cover")
         data["user"] = request.user.id
