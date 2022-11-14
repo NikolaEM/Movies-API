@@ -11,6 +11,14 @@ class MovieSerializer(serializers.ModelSerializer):
     def get_dislikes_count(self, obj):
         return obj.dislikes.count()
 
+    def get_watched_by_user(self, obj):
+        user = self.context.get('request').user
+        return True if obj.watch_list.filter(user__id=user.id, watched=True).exists() else False
+
+    def get_in_users_watchlist(self, obj):
+        user = self.context.get('request').user
+        return True if obj.watch_list.filter(user__id=user.id).exists() else False
+
     class Meta:
         depth = 1
         model = Movie
